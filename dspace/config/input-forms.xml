@@ -245,7 +245,7 @@ it, please enter the types and the actual numbers or codes.</hint>
            </field>
 
            <field>
-               <dc-schema>rioxxterms</dc-schema>
+               <dc-schema>refterms</dc-schema>
                <dc-element>version</dc-element>
                <dc-qualifier></dc-qualifier>
                <repeatable>false</repeatable>
