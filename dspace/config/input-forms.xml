@@ -13,7 +13,7 @@ CTYPE input-forms SYSTEM "input-forms.dtd">
  <!-- the mapping for handle "default".                                    -->
 
  <form-map>
-   <name-map collection-handle="default" form-name="traditional" />
+   <name-map collection-handle="default" form-name="traditional_and_ref" />
  </form-map>
 
 
@@ -199,6 +199,216 @@ it, please enter the types and the actual numbers or codes.</hint>
          <required></required>
        </field>
      </page>
+     <page number="3">
+           <field>
+               <dc-schema>rioxxterms</dc-schema>
+               <dc-element>type</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Output Type</label>
+               <input-type value-pairs-name="rioxxterms_types">dropdown</input-type>
+               <hint>REF Output Type (MANDATORY for REF) </hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>dcterms</dc-schema>
+               <dc-element>dateAccepted</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Acceptance Date</label>
+               <input-type>date</input-type>
+               <hint>REF Acceptance Date (MANDATORY FOR REF) </hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>refterms</dc-schema>
+               <dc-element>technicalException</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Technical Exception</label>
+               <input-type value-pairs-name="refterms_technical_exceptions">dropdown</input-type>
+               <hint>REF Technical Exception (optional)</hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>refterms</dc-schema>
+               <dc-element>technicalExceptionExplanation</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Technical Exception Explanation</label>
+               <input-type>textarea</input-type>
+               <hint>REF Technical Exception Further Explanation (optional)</hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>rioxxterms</dc-schema>
+               <dc-element>version</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Version of deposited file</label>
+               <input-type value-pairs-name="rioxxterms_version">dropdown</input-type>
+               <hint>REF Version of file deposited (MANDATORY FOR REF) </hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>refterms</dc-schema>
+               <dc-element>dateDeposit</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Deposit Date</label>
+               <input-type>date</input-type>
+               <hint>REF Deposit Date (MANDATORY FOR REF) </hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>refterms</dc-schema>
+               <dc-element>dateFCD</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Date First Compliant Deposit</label>
+               <input-type>date</input-type>
+               <hint>REF Date First Compliant Deposit - in case the file is updated (optional) </hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>refterms</dc-schema>
+               <dc-element>panel</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Panel</label>
+               <input-type value-pairs-name="refterms_panels">dropdown</input-type>
+               <hint>REF Panel </hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>refterms</dc-schema>
+               <dc-element>depositException</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Deposit Exception</label>
+               <input-type value-pairs-name="refterms_deposit_exceptions">dropdown</input-type>
+               <hint>REF Deposit Exception (optional)</hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>refterms</dc-schema>
+               <dc-element>depositlExceptionExplanation</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Deposit Exception Explanation</label>
+               <input-type>textarea</input-type>
+               <hint>REF Deposit Exception Further Explanation (optional)</hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>rioxxterms</dc-schema>
+               <dc-element>publicationdate</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Publication Date</label>
+               <input-type>date</input-type>
+               <hint>REF Publication Date (MANDATORY FOR REF) </hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>refterms</dc-schema>
+               <dc-element>dateFCA</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Date First Compliant Access</label>
+               <input-type>date</input-type>
+               <hint>REF Date First Compliant Access - in case the file is updated (optional) </hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>refterms</dc-schema>
+               <dc-element>dateEmbargoEnd</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Embargo End Date</label>
+               <input-type>date</input-type>
+               <hint>REF Embargo End Date - record if different to publication date (MANDATORY FOR REF if there is an embargo) </hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>refterms</dc-schema>
+               <dc-element>dateFreeToRead</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Date Free to Read</label>
+               <input-type>date</input-type>
+               <hint>REF Date Free to Read - record if different to publication date (MANDATORY FOR REF) </hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>refterms</dc-schema>
+               <dc-element>dateFreeToDownload</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Date Free to Download</label>
+               <input-type>date</input-type>
+               <hint>REF Date Free to Download - record if different to publication date (MANDATORY FOR REF) </hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>refterms</dc-schema>
+               <dc-element>dateToSearch</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Date to Search</label>
+               <input-type>date</input-type>
+               <hint>REF Date to Search - record if different to publication date (MANDATORY FOR REF) </hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>refterms</dc-schema>
+               <dc-element>accessException</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Access Exception</label>
+               <input-type value-pairs-name="refterms_access_exceptions">dropdown</input-type>
+               <hint>REF Access Exception (optional)</hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>refterms</dc-schema>
+               <dc-element>accessExceptionExplanation</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Access Exception Explanation</label>
+               <input-type>textarea</input-type>
+               <hint>REF Access Exception Further Explanation (optional)</hint>
+               <required></required>
+           </field>
+
+           <field>
+               <dc-schema>refterms</dc-schema>
+               <dc-element>exceptionFreeText</dc-element>
+               <dc-qualifier></dc-qualifier>
+               <repeatable>false</repeatable>
+               <label>Other Exception</label>
+               <input-type>textarea</input-type>
+               <hint>REF Other Exception (optional)</hint>
+               <required></required>
+           </field>
+       </page>
    </form>
 
    <form name="one">
@@ -399,6 +609,126 @@ it, please enter the types and the actual numbers or codes.</hint>
        <stored-value>other</stored-value>
      </pair>
    </value-pairs>
+   
+     <value-pairs value-pairs-name="rioxxterms_version" dc-term="rioxxterms_version">
+         <pair>
+             <displayed-value>Not Applicable (or Unknown)</displayed-value>
+             <stored-value>NA</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>Author's Original</displayed-value>
+             <stored-value>AO</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>Submitted Manuscript Under Review</displayed-value>
+             <stored-value>SMUR</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>Accepted Manuscript</displayed-value>
+             <stored-value>AM</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>Proof</displayed-value>
+             <stored-value>P</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>Version of Record</displayed-value>
+             <stored-value>VoR</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>Corrected Version of Record</displayed-value>
+             <stored-value>CVoR</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>Enhanced Version of Record</displayed-value>
+             <stored-value>EVoR</stored-value>
+         </pair>
+     </value-pairs>
+
+
+     <value-pairs value-pairs-name="refterms_technical_exceptions" dc-term="refterms_technicalException">
+         <pair>
+             <displayed-value>Output is a conference proceeding, but not within definition (i.e., it does not have an ISSN, or the proceedings are published as part of book series)</displayed-value>
+             <stored-value>conferenceOutsideDefinition</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>At the point of acceptance, the individual whose output is being submitted to the REF was at a different UK HEI which failed to comply with the criteria.</displayed-value>
+             <stored-value>differentUKHEI</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>The repository experienced a short term or transient technical failure that prevented compliance with the criteria (this should not apply to systemic issues)</displayed-value>
+             <stored-value>technicalFailure</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>An external service provider failure prevented compliance (for instance, a subject repository did not enable open access at the end of the embargo period, or a subject repository ceased to operate).</displayed-value>
+             <stored-value>externalServiceProvider</stored-value>
+         </pair>
+     </value-pairs>
+
+     <value-pairs value-pairs-name="refterms_deposit_exceptions" dc-term="refterms_depositException">
+         <pair>
+             <displayed-value>The individual whose output is being submitted to the REF was unable to secure the use of a repository at the point of acceptance</displayed-value>
+             <stored-value>noRepositoryAtAcceptance</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>The individual whose output is being submitted to the REF experienced a delay in securing the final peer-reviewed text (for instance, where a paper has multiple authors).</displayed-value>
+             <stored-value>delaySecuringText</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>The individual whose output is being submitted to the REF was not employed by a UK HEI at the time of submission for publication.</displayed-value>
+             <stored-value>notEmployedAtUKHEI</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>It would be unlawful to deposit, or request the deposit of, the output.</displayed-value>
+             <stored-value>unlawfulDeposit</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>Depositing the output would present a security risk.</displayed-value>
+             <stored-value>securityRisk</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>The output was published as ‘gold’ open access (e.g. RCUK-funded projects where an open access article processing charge has been paid)</displayed-value>
+             <stored-value>publishedGoldOA</stored-value>
+         </pair>
+     </value-pairs>
+
+     <value-pairs value-pairs-name="refterms_access_exceptions" dc-term="refterms_accessException">
+         <pair>
+             <displayed-value>The output depends on the reproduction of third party content for which open access rights could not be granted (either within the specified timescales, or at all)</displayed-value>
+             <stored-value>thirdPartyRights</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>The publication concerned requires an embargo period that exceeds the stated maxima, and was the most appropriate publication for the output.</displayed-value>
+             <stored-value>publicationExceedsMaxEmbargo</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>The publication concerned actively disallows open-access deposit in a repository, and was the most appropriate publication for the output.</displayed-value>
+             <stored-value>publicationDisallowsOA</stored-value>
+         </pair>
+     </value-pairs>
+
+     <value-pairs value-pairs-name="refterms_panels" dc-term="refterms_panels">
+         <pair>
+             <displayed-value>Unspecified</displayed-value>
+             <stored-value>Unspecified</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>REF Main Panel A </displayed-value>
+             <stored-value>A</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>REF Main Panel B</displayed-value>
+             <stored-value>B</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>REF Main Panel C</displayed-value>
+             <stored-value>C</stored-value>
+         </pair>
+         <pair>
+             <displayed-value>REF Main Panel D</displayed-value>
+             <stored-value>D</stored-value>
+         </pair>
+     </value-pairs>
 
  </form-value-pairs>
 
