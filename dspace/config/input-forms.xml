@@ -647,6 +647,10 @@ it, please enter the types and the actual numbers or codes.</hint>
 
 
      <value-pairs value-pairs-name="refterms_technical_exceptions" dc-term="refterms_technicalException">
+     	<pair>
+            <displayed-value>No Technical Exception</displayed-value>
+            <stored-value>NA</stored-value>
+        </pair>
          <pair>
              <displayed-value>Output is a conference proceeding, but not within definition (i.e., it does not have an ISSN, or the proceedings are published as part of book series)</displayed-value>
              <stored-value>conferenceOutsideDefinition</stored-value>
@@ -666,6 +670,10 @@ it, please enter the types and the actual numbers or codes.</hint>
      </value-pairs>
 
      <value-pairs value-pairs-name="refterms_deposit_exceptions" dc-term="refterms_depositException">
+     	<pair>
+             <displayed-value>No Deposit Exception</displayed-value>
+             <stored-value>NA</stored-value>
+        </pair>
          <pair>
              <displayed-value>The individual whose output is being submitted to the REF was unable to secure the use of a repository at the point of acceptance</displayed-value>
              <stored-value>noRepositoryAtAcceptance</stored-value>
@@ -693,6 +701,10 @@ it, please enter the types and the actual numbers or codes.</hint>
      </value-pairs>
 
      <value-pairs value-pairs-name="refterms_access_exceptions" dc-term="refterms_accessException">
+    	 <pair>
+            <displayed-value>No Access Exception</displayed-value>
+            <stored-value>NA</stored-value>
+        </pair>
          <pair>
              <displayed-value>The output depends on the reproduction of third party content for which open access rights could not be granted (either within the specified timescales, or at all)</displayed-value>
              <stored-value>thirdPartyRights</stored-value>
