@@ -645,6 +645,63 @@ it, please enter the types and the actual numbers or codes.</hint>
          </pair>
      </value-pairs>
 
+ <value-pairs value-pairs-name="rioxxterms_types" dc-term="type">
+     <pair>
+       <displayed-value>Book</displayed-value>
+       <stored-value>Book</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Book chapter</displayed-value>
+       <stored-value>Book chapter</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Book edited</displayed-value>
+       <stored-value>Book edited</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Conference Paper/Proceeding/Abstract</displayed-value>
+       <stored-value>Conference Paper/Proceeding/Abstract</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Journal Article/Review</displayed-value>
+       <stored-value>Journal Article/Review</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Manual/Guide</displayed-value>
+       <stored-value>Manual/Guide</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Monograph</displayed-value>
+       <stored-value>Monograph</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Policy briefing report</displayed-value>
+       <stored-value>Policy briefing report</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Technical Report</displayed-value>
+       <stored-value>Technical Report</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Technical Standard</displayed-value>
+       <stored-value>Technical Standard</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Thesis</displayed-value>
+       <stored-value>Thesis</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Other</displayed-value>
+       <stored-value>Other</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Consultancy Report</displayed-value>
+       <stored-value>Consultancy Report</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Working paper</displayed-value>
+       <stored-value>Working paper</stored-value>
+     </pair>
 
      <value-pairs value-pairs-name="refterms_technical_exceptions" dc-term="refterms_technicalException">
      	<pair>
