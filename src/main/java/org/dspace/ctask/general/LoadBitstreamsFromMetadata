@@ -1,0 +1,255 @@
+package org.dspace.ctask.general;
+
+import org.dspace.authorize.AuthorizeException;
+import org.dspace.content.*;
+import org.dspace.core.ConfigurationManager;
+import org.dspace.core.Context;
+import org.dspace.curate.AbstractCurationTask;
+import org.dspace.curate.Curator;
+
+import java.io.*;
+import java.nio.channels.FileChannel;
+import java.sql.SQLException;
+
+import org.apache.log4j.Logger;
+import org.dspace.curate.Distributive;
+
+/**
+ * User: cknowles - University of Edinburgh
+ * Date: 07/02/13
+ * Time: 14:39
+ */
+@Distributive
+public class LoadBitstreamsFromMetadata extends AbstractCurationTask {
+
+    private static final String PLUGIN_PREFIX = "loadbitstreams";
+
+    // The status of the link checking of this item
+    private int status = Curator.CURATE_UNSET;
+
+    //loaded from config file in init
+    private static String uploadDirectory = null;
+    private static String successDirectory = null;
+    private static String metadataField = null;
+    private static String language = null;
+
+    // The log4j logger for this class
+    private static Logger log = Logger.getLogger(LoadBitstreamsFromMetadata.class);
+
+    @Override
+    public void init(Curator curator, String taskId) throws IOException {
+        super.init(curator, taskId);
+
+        uploadDirectory = ConfigurationManager.getProperty(PLUGIN_PREFIX, "uploadDirectory");
+        successDirectory = ConfigurationManager.getProperty(PLUGIN_PREFIX, "successDirectory");
+        metadataField = ConfigurationManager.getProperty(PLUGIN_PREFIX, "metadataField");
+        language = ConfigurationManager.getProperty(PLUGIN_PREFIX, "language");
+        log.info("uploadDirectory " + uploadDirectory);
+    }
+
+    @Override
+    public int perform(DSpaceObject dso) throws IOException {
+
+
+        StringBuilder results = new StringBuilder();
+
+//if dso item run on this item
+        status = Curator.CURATE_SKIP;
+        try {
+
+            Context context = new Context();
+            if (dso instanceof Item) {
+
+                log.info("Using item " + dso.getHandle());
+                Item item = (Item) dso;
+                loadBitstream(context, results, item);
+                //DSpace does not allow you to get all metadata for an item
+            } else if (dso instanceof Collection) {
+                log.info("Using Collection " + dso.getHandle());
+                Collection collection = (Collection) dso;
+                ItemIterator items = collection.getAllItems();
+                while (items.hasNext()) {
+                    Item item = items.next();
+                    loadBitstream(context, results, item);
+                }
+
+            } else if (dso instanceof Community) {
+                log.info("Using Community " + dso.getHandle());
+                Community community = (Community) dso;
+                Collection[] collections = community.getCollections();
+                for (Collection collection : collections) {
+                    ItemIterator items = collection.getAllItems();
+                    while (items.hasNext()) {
+                        Item item = items.next();
+                        loadBitstream(context, results, item);
+                    }
+                }
+
+            } else {
+                log.info("dso is not an item, collection or community");
+                results.append("DSpace Object is not an item, collection or community - SKIP\n");
+            }
+        } catch (SQLException se) {
+            log.error(se.getMessage());
+        }
+
+        setResult(results.toString());
+        report(results.toString());
+        System.out.println(results.toString());
+        return status;
+    }
+
+    private void loadBitstream(Context context, StringBuilder results, Item item) throws SQLException {
+
+        DCValue[] dcValues = item.getMetadata(metadataField);
+        if (dcValues.length > 0) {
+            int noBitstreams = item.getNonInternalBitstreams().length;
+
+            for (int i = 0; i < dcValues.length; i++) {
+                DCValue dcValue = dcValues[i];
+                String fullFilename = uploadDirectory + dcValue.value;
+                File sourceFile = new File(fullFilename);
+                if (sourceFile.exists() && sourceFile.isFile()) {
+
+                    try {
+                        Bitstream b;
+                        // do we already have a bundle?
+                        Bundle[] bundles = item.getBundles("ORIGINAL");
+                        FileInputStream fileInputStream = new FileInputStream(sourceFile);
+
+                        if (bundles.length < 1) {
+                            // set bundle's name to ORIGINAL
+                            b = item.createSingleBitstream(fileInputStream, "ORIGINAL");
+                        } else {
+                            // we have a bundle already, just add bitstream
+                            b = bundles[0].createBitstream(fileInputStream);
+                        }
+
+
+                        b.setName(dcValue.value);
+                        b.setSource("loaded from metadata at " + fullFilename);
+                        b.setDescription(null);
+
+                        // Identify the format save to metadata?
+                        BitstreamFormat bf = FormatIdentifier.guessFormat(context, b);
+                        b.setFormat(bf);
+
+                        // Update to DB
+                        results.append("Added bitstream " + dcValue.value + " to item + " + item.getHandle() + "\n");
+                        b.update();
+                        fileInputStream.close();
+
+                        //TODO Virus check?
+                        //add metadata about bitstream?
+                        //remove dim.original if file found and loaded
+                        removeBitstreamMetadata(item);
+
+                        if (successDirectory.length() > 0) {
+                            File destFile = new File(successDirectory + dcValue.value);
+                            log.debug("destFile " + destFile);
+                            copyFile(sourceFile, destFile);
+                        } else {
+                            boolean success = sourceFile.delete();
+                            //report if not successful
+                            if (!success) {
+                                results.append("File deletion error: " + sourceFile + " - NOT Deleted\n");
+                            }
+                        }
+
+                    } catch (FileNotFoundException fe) {
+                        log.error(fe.getMessage());
+                        results.append("File not found: " + fullFilename + " - SKIP\n");
+                    } catch (AuthorizeException authorizeException) {
+                        log.error(authorizeException.getMessage());
+                        results.append("Authorize Exception for: " + fullFilename + " - SKIP\n");
+                    } catch (IOException ie) {
+                        ie.printStackTrace();
+                        log.error(ie.getMessage());
+                        results.append("IO error: " + fullFilename + " - SKIP\n");
+                    } catch (SQLException sqle) {
+                        log.error(sqle.getMessage());
+                        results.append("SQL error: " + fullFilename + " - SKIP\n");
+                    }
+                } else {
+                    results.append("No file at " + fullFilename + " to upload - SKIP\n");
+                }
+            }
+            try {
+                //update item at the end or as we go through?
+                item.update();
+                int laterNoBitstreams = item.getNonInternalBitstreams().length;
+                if (laterNoBitstreams > noBitstreams)
+                {
+                    results.append(laterNoBitstreams - noBitstreams + " file uploaded - SUCCESS\n");
+                    status = Curator.CURATE_SUCCESS;
+                }
+
+            } catch (AuthorizeException authorizeException) {
+                log.error(authorizeException.getMessage());
+                results.append("Authorize Exception for: " + item + " - ERROR\n");
+            } catch (SQLException sqle) {
+                log.error(sqle.getMessage());
+                results.append("SQL error: " + item + " update - ERROR\n");
+            }
+        } else
+        {
+            results.append("No metadata record indicating a file to upload for item " + item.getHandle() +  " - SKIP\n");
+        }
+    }
+
+    private void removeBitstreamMetadata(Item item) {
+        String[] metadataFields = metadataField.split("\\.");
+        String schema = metadataFields.length > 0 ? metadataFields[0] : null;
+        String element = metadataFields.length > 1 ? metadataFields[1] : null;
+        String qualifier = metadataFields.length > 2 ? metadataFields[2] : null;
+        String lang = language.length() == 0? null : language;
+        log.debug(item.getHandle() + " " + schema + "." + element + "." + qualifier + " " + lang + " has been removed");
+        item.clearMetadata(schema, element, qualifier, lang);
+    }
+
+    private static void copyFile(File sourceFile, File destFile) throws IOException {
+        if (!destFile.exists()) {
+            destFile.createNewFile();
+        }
+
+        FileChannel source = null;
+        FileChannel destination = null;
+        try {
+            source = new FileInputStream(sourceFile).getChannel();
+            destination = new FileOutputStream(destFile).getChannel();
+            long transferredBytes = destination.transferFrom(source, 0, source.size());
+
+            //is this process complete before delete
+            if (transferredBytes > 0) {
+                //need to close to be able to delete the file
+                if (source != null) {
+                    source.close();
+                }
+                if (destination != null) {
+                    destination.close();
+                }
+                //delete original location
+                boolean success = sourceFile.delete();
+                if (!success) {
+                    log.info("File deletion error: " + sourceFile.getPath() + " - NOT Deleted\n");
+                } else {
+                    log.info(sourceFile.getPath() + " - deleted");
+                }
+            }
+        } catch (SecurityException se) {
+            log.error("file error " + se.getMessage());
+
+        }
+        catch (Exception e) {
+            log.error("file error " + e.getMessage());
+
+        } finally {
+            if (source != null) {
+                source.close();
+            }
+            if (destination != null) {
+                destination.close();
+            }
+        }
+    }
+}
